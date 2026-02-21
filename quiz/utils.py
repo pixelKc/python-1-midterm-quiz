@@ -161,9 +161,9 @@ def validate_text_choice(prompt: str, options: list) -> int:
     """
     while True:
         user_input = input(prompt)
-        choice = str(user_input).lower
+        choice = str(user_input).lower()
         is_valid = False
-        if choice in options:
+        if choice in [opt.lower() for opt in options]:
             return(choice)  
 
         print("Please select a valid options: ", end="")

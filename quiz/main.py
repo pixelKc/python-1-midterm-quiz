@@ -5,19 +5,19 @@ from utils import *
 # PASSWORD GENERATION FUNCTIONS
 # ============================================================================
 
-def generate_random_password() -> str:
-    length = 12
+def generate_random_password(length: int, has_numbers: bool, has_symbols: bool) -> str:
     password = ""
     remaining_length = length
     char_pool = UPPERCASE + LOWERCASE
 
-    password += random.choice(NUMBERS)
-    remaining_length -= 1
-    char_pool += NUMBERS
-
-    password += random.choice(SYMBOLS)
-    remaining_length -= 1
-    char_pool += SYMBOLS
+    if has_numbers == True:
+        password += random.choice(NUMBERS)
+        remaining_length -= 1
+        char_pool += NUMBERS
+    if has_symbols == True:
+        password += random.choice(SYMBOLS)
+        remaining_length -= 1
+        char_pool += SYMBOLS
 
     for _ in range(remaining_length):
         password += random.choice(char_pool)
@@ -28,8 +28,7 @@ def generate_random_password() -> str:
 
 
 # STEP 3a: Implement generate_pin() function
-def generate_pin() -> str:
-    length = 4
+def generate_pin(length: int) -> str:
     pin = ""
 
     for _ in range(length):
@@ -38,12 +37,8 @@ def generate_pin() -> str:
 
 
 # STEP 4a: Implement generate_memorable_password() function
-def generate_memorable_password() -> str:
+def generate_memorable_password(num_words: int, separator: str, capitalize: bool) -> str:
     password = ""
-    num_words = 4
-    seperator = "-"
-    capitalize = False
-
 
     for i in range(num_words):
         word = random.choice(WORD_LIST)
@@ -53,7 +48,7 @@ def generate_memorable_password() -> str:
         if i == 0:
             password += word
         else:
-            password += seperator + word
+            password += separator + word
 
     return password
 
@@ -128,12 +123,15 @@ def generate_random_password_workflow():
     print(" === RANDOM PASSWORD GENERATION === ")
     print("=" * 60)
     password_num = validate_choice("Select the amount of passwords you would like to generate (Max 5): ", 1, 5)
+    length = validate_choice("Select password length (8 - 100)", 8, 100)
+    numbers = validate_text_choice("Should numbers be included? (Y/n): ", ["Y", "n"]) == "Y"
+    symbols = validate_text_choice("Should symbols be included? (Y/n): ", ["Y", "n"]) == "Y"
     is_multiple = password_num > 1
     print("=" * 60)
     print("GENERATED PASSWORDS")
     print("=" * 60)
     for i in range(password_num):
-        password = generate_random_password()
+        password = generate_random_password(length, numbers, symbols)
         display_password(password, password_num=(i + 1), is_multiple=is_multiple)
     input("Press enter to return")
 
@@ -143,12 +141,13 @@ def generate_pin_workflow():
     print(" === PIN CODE GENERATION === ")
     print("=" * 60)
     pin_num = validate_choice("Select the amount of passwords you would like to generate (Max 5): ", 1, 5)
+    length = validate_choice("Select pin length (3 - 12)", 3, 12)
     is_multiple = pin_num > 1
     print("=" * 60)
     print("GENERATED PASSWORDS")
     print("=" * 60)
     for i in range(pin_num):
-        pin = generate_pin()
+        pin = generate_pin(length)
         display_password(pin, password_num=(i + 1), is_multiple=is_multiple)
     input("Press enter to return")
 
@@ -158,12 +157,16 @@ def generate_memorable_password_workflow():
     print(" === MEMORABLE PASSWORD GENERATION === ")
     print("=" * 60)
     password_num = validate_choice("Select the amount of passwords you would like to generate (Max 5): ", 1, 5)
+    words = validate_choice("How many words should your passwords have (3 - 15)", 3, 15)
+    display_separator_menu()
+    separator = {1: "-", 2: " ", 3: ".", 4: ",", 5: "_"}[validate_choice("Select Separator (1 - 5)", 1, 5)]
+    capitalize = validate_text_choice("Should your password be capitalized eg. Word-Word-Word-Word (Y/n)", ["Y", "n"]) == "Y"
     is_multiple = password_num > 1
     print("=" * 60)
     print("GENERATED PASSWORDS")
     print("=" * 60)
     for i in range(password_num):
-        password = generate_memorable_password()
+        password = generate_memorable_password(words, separator, capitalize)
         display_password(password, password_num=(i + 1), is_multiple=is_multiple)
     input("Press enter to return")
 

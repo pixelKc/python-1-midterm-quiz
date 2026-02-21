@@ -147,3 +147,26 @@ def validate_choice(prompt: str, min_choice: int, max_choice: int) -> int:
         except ValueError:
             print("Please enter a valid number.")
 
+def validate_text_choice(prompt: str, options: list) -> int:
+    """
+    Validate user input for menu choices with error handling.
+    Keeps asking until valid input is received.
+
+    Args:
+        prompt (str): The message to display to the user
+        options (list): The options to check the user input
+
+    Returns:
+        int: The user's valid choice
+    """
+    while True:
+        user_input = input(prompt)
+        choice = str(user_input).lower
+        is_valid = False
+        if choice in options:
+            return(choice)  
+
+        print("Please select a valid options: ", end="")
+        print(*options, sep="/")
+
+

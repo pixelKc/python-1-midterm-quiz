@@ -39,22 +39,22 @@ def calculate_strength(password: str) -> str:
     Calculate the strength of a password based on entropy calculation.
     Entropy = log₂(R^L) where R is the character set size and L is the password length.
     This function is fully implemented - students will call it but not modify it.
-    
+
     Args:
         password (str): The password to analyze
-        
+
     Returns:
         str: Strength rating - "Weak", "Medium", "Strong", or "Very Strong"
     """
     if len(password) < 6:
         return "Weak"
-    
+
     # Determine the character set size (R) based on what's actually in the password
     has_upper = False
     has_lower = False
     has_number = False
     has_symbol = False
-    
+
     for char in password:
         if char in UPPERCASE:
             has_upper = True
@@ -64,7 +64,7 @@ def calculate_strength(password: str) -> str:
             has_number = True
         elif char in SYMBOLS:
             has_symbol = True
-    
+
     # Calculate character set size (R)
     # Start with base character sets that are present
     char_set_size = 0
@@ -76,15 +76,15 @@ def calculate_strength(password: str) -> str:
         char_set_size += len(NUMBERS)
     if has_symbol:
         char_set_size += len(SYMBOLS)
-    
+
     # If no recognized characters, use a default small set
     if char_set_size == 0:
         char_set_size = 26  # Default to lowercase only
-    
+
     # Calculate entropy: log₂(R^L) = L * log₂(R)
     length = len(password)
     entropy = length * math.log2(char_set_size)
-    
+
     # Map entropy to strength ratings
     # Based on modern security recommendations:
     # - Weak: < 40 bits (easily crackable)
@@ -105,19 +105,19 @@ def shuffle_string(text: str) -> str:
     """
     Shuffle the characters in a string randomly.
     This function is fully implemented - students will call it but not modify it.
-    
+
     Args:
         text (str): The string to shuffle
-        
+
     Returns:
         str: A new string with the same characters in random order
     """
     # Convert string to list for shuffling
     char_list = list(text)
-    
+
     # Shuffle the list
     random.shuffle(char_list)
-    
+
     # Convert back to string
     return ''.join(char_list)
 
@@ -126,12 +126,12 @@ def validate_choice(prompt: str, min_choice: int, max_choice: int) -> int:
     """
     Validate user input for menu choices with error handling.
     Keeps asking until valid input is received.
-    
+
     Args:
         prompt (str): The message to display to the user
         min_choice (int): Minimum valid choice number
         max_choice (int): Maximum valid choice number
-    
+
     Returns:
         int: The user's valid choice
     """
@@ -143,6 +143,7 @@ def validate_choice(prompt: str, min_choice: int, max_choice: int) -> int:
                 return choice
             else:
                 print(f"Please choose between {min_choice} and {max_choice}.")
-                
+
         except ValueError:
             print("Please enter a valid number.")
+
